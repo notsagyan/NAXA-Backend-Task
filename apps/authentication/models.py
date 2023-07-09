@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from .managers import UserManager
 from typing import Any
 from store.countries import *
-from django.core.validators import MaxValueValidator
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 document_choices = (
@@ -29,7 +29,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(
         'last name',
         max_length = 30,
-        blank=True
+        blank = True
     )
     date_joined = models.DateTimeField(
         'date joined',
@@ -38,6 +38,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(
         'active',
         default = True
+    )
+    is_staff = models.BooleanField(
+        default = False
+    )
+    is_admin = models.BooleanField(
+        default = False
     )
     
     country = models.CharField(
@@ -48,9 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank = True,
         null = True
     ) 
-    phone_number = models.PositiveIntegerField(
-        validators = [MaxValueValidator(15)]
-    )
+    phone_number = PhoneNumberField()
     date_of_birth = models.DateField()
     home_address = models.PointField(
         geography = True,
@@ -64,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['country', 'phone_number', 'date_of_birth']
 
     class Meta:
         verbose_name = _('user')
@@ -92,6 +96,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
         
 
+class WorkDistance(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete = models.CASCADE
+    )
+    points = models.LineStringField()
+    
+    
 class AreaOfInterest(models.Model):
     user = models.ForeignKey(
         User,
