@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "django.contrib.gis",
     "phonenumber_field",
     "rest_framework",
+    "rest_framework_gis",
     "rest_framework_simplejwt",
     "apps.authentication"
 ]

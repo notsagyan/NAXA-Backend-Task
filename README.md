@@ -1,11 +1,11 @@
-# Backend Task Overview	
+# Backend Task Overview
 
 ## Getting Started
 
 First clone the repository from Github and switch to the new directory :
 
 ```
-
+git@github.com:notsagyan/NAXA-Backend-Task.git
 ```
 
 Create a new virtual environment for the project and activate it. (*Python 3.11.4*) :
@@ -47,10 +47,17 @@ celery -A backend_task worker -l info
 celery -A backend task beat -l info
 ```
 
+Running tests :
+
+```
+EXPORT DJANGO_SETTINGS_MODULE=backend_task.settings 
+SET DJANGO_SETTIGNS_MODULE=backend_task.settings (Windows)
+pytest apps/authentication/tests.py
+```
 
 ## Overview
 
-The project is entitled backend task. 
+The project is entitled backend task.
 
 I have switched the username field with the email address as the field required for login and register as it makes more sense. Extended the user model with AbstractBaseUser for this purpose and to add certain fields.
 

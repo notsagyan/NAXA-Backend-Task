@@ -95,6 +95,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
         
+    def __str__(self) -> str:
+        return str(self.id)
+        
 
 class WorkDistance(models.Model):
     user = models.OneToOneField(
