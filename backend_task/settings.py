@@ -141,6 +141,13 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     'everyday': {
         'task': 'apps.authentication.tasks.wish_birthday',
-        'schedule': crontab(hour = 0, minute = 0),
+        'schedule': crontab(hour = 0, minute = 1),
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD =  ''

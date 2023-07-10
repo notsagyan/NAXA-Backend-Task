@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
+from rest_framework.permissions import IsAuthenticated
 
 class StandardPagination(PageNumberPagination):
     page_size = 100
@@ -22,6 +23,7 @@ class UserListView(ListAPIView):
 class UserCreateView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserAdminSerializer
+    permission_classes = [IsAuthenticated]
     
     def create(self, request: HttpRequest, *args: Any, **kwargs: Any) -> Response:
         if request.user.has_perm('authentication.add_user'):
@@ -31,6 +33,7 @@ class UserCreateView(CreateAPIView):
         
 class UserRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
         if self.request.user.is_admin or self.request.user.is_superuser:
